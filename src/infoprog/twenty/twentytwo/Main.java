@@ -2,6 +2,7 @@ package infoprog.twenty.twentytwo;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.util.*;
 
 class sortbytav implements Comparator<Raktar> {
@@ -10,11 +11,10 @@ class sortbytav implements Comparator<Raktar> {
     }
 }
 
-class Raktar { public int lat, lon, zsak, tavlapfoldre;}
 
 public class Main {
 
-    public static String filepath = "data files/raktar.txt";
+    public static String filepath = "Infoprog2022-main/data files/raktar.txt";
     //kilogrammban
     public static int zsaksuly = 20;
     public static int szanteherbiras = 2500;
@@ -24,7 +24,8 @@ public class Main {
 
     public static void main(String[] args) {
         beolv();
-        tavszamolas();
+//        tavszamolas();
+        System.out.println(mennyiKellMeg());
 //        Collections.sort(raktarak, new sortbytav());
 //        for (Raktar r :
 //                raktarak) {
@@ -52,7 +53,7 @@ public class Main {
                 } else {
                     r.lat = Integer.parseInt(sc.next());
                     r.lon = Integer.parseInt(sc.next());
-                    r.zsak = Integer.parseInt(sc.next());
+                    r.maxcap = Integer.parseInt(sc.next());
                 }
                 raktarak.add(r);
                 sc.close();
@@ -67,24 +68,55 @@ public class Main {
 
     public static void tavszamolas(){
         for (Raktar r : raktarak) {
-            r.tavlapfoldre = (mennyitav(70,23,r.lat,r.lon));
+            r.tavlapfoldre = (mennyiTav(70,23,r.lat,r.lon));
         }
     }
 
     public static void feladat1() {
         int szanmaxzsakok = szanteherbiras / zsaksuly;
-        for (Raktar r :
-                raktarak) {
-            while (r.zsak != 0) {
-                int zsakok = szanmaxzsakok;
-
+        int szanzsakokszama = szanmaxzsakok;
+        int mennyikell = mennyiKellMeg();
+        int nemnullaraktarszama = 1;
+        int utakszama = 0;
+        int megtettKMk = 0;
+        while (mennyiKellMeg() != 0) {
+        	utakszama++;
+            for (int i = 0; i < raktarak.size(); i++) {
+				// 1 raktar aminek keszlete nem 0
+            	if (raktarak.get(i).keszlet != 0) {
+            		nemnullaraktarszama = i;
+            		break;
+            	}
+			}
+            while (szanzsakokszama != 0) {
+            	if (szanzsakokszama > raktarak.get(nemnullaraktarszama).keszlet) {
+            		szanzsakokszama -= raktarak.get(nemnullaraktarszama).keszlet;
+            		raktarak.get(nemnullaraktarszama).keszlet = 0;
+            		// menjel ma' tovabb
+            		if  (nemnullaraktarszama == raktarak.size()) {
+            			//FileWriter fw = new FileWriter(filepath);
+                 	}
+            	} else {
+            		raktarak.get(nemnullaraktarszama).keszlet -= szanzsakokszama;
+            		szanzsakokszama = 0;
+            		//menjel ma' haza
+            	}
             }
         }
+        System.out.println("lol");
+    }
+    
+    public static int mennyiKellMeg() {
+    	int kellendozsak = 0;
+    	for (Raktar raktar : raktarak) {
+			kellendozsak += raktar.maxcap;
+		}
+    	return kellendozsak;
     }
 
     // forras: https://www.movable-type.co.uk/scripts/latlong.html
     // okosabb verzio
-    public static int mennyitav(int lat1, int lon1, int lat2, int lon2) {
+    public static int mennyiTav(int lat1, int lon1, int lat2, int lon2) {
         final double r = 6371e3;
         double Phi1 = lat1 * Math.PI/180;
         double Phi2 = lat2 * Math.PI/180;
@@ -100,7 +132,7 @@ public class Main {
     }
 
     // forras: https://www.movable-type.co.uk/scripts/latlong.html
-    // Hulyebb verzio
+    // pitagorasz tetele szerint
     public static double mennyitav2(int lat1, int lat2, int lon1, int lon2) {
         final double r = 6371e3;
         double Phi1 = lat1 * Math.PI/180;
