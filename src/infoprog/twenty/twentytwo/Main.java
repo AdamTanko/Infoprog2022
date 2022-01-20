@@ -104,14 +104,10 @@ public class Main {
                         //menjel ma' haza
                     }
                     if (nemnullaraktarszama == raktarak.size()) {
-                        if (voltMarIrva){
-                            break outer;
-                        }
                         String s = "," + szanzsakokszama;
                         Files.write(Paths.get(filepath), s.getBytes(), StandardOpenOption.APPEND);
                         raktarak.get(nemnullaraktarszama-1).setKeszlet(szanzsakokszama);
                         System.out.println("Maradek zsakok szama hozza adva a raktar.txt-hez");
-                        voltMarIrva=true;
                         break outer;
                     }
                 }
