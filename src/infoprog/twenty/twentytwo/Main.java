@@ -2,19 +2,12 @@ package infoprog.twenty.twentytwo;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
-import java.util.*;
-
-class sortbytav implements Comparator<Raktar> {
-    public int compare(Raktar a, Raktar b) {
-        return a.getTavlapfoldre() - b.getTavlapfoldre();
-    }
-}
+import java.util.ArrayList;
+import java.util.Scanner;
 
 
 public class Main {
@@ -23,14 +16,12 @@ public class Main {
     //kilogrammban
     private static final int zsaksuly = 20;
     private static final int szanteherbiras = 2500;
-    private static boolean voltMarIrva;
 
     private static final ArrayList<Raktar> raktarak = new ArrayList<>();
 
     public static void main(String[] args) {
         beolv();
         tavszamolas();
-        System.out.println(mennyiKellMeg());
         feladat1_2();
     }
 
@@ -80,7 +71,7 @@ public class Main {
             if (raktarak.size() == 0) {
                 beolv();
             }
-            int szanzsakokszama;
+            int szanzsakokszama = szanteherbiras / zsaksuly;
             int mennyikell = mennyiKellMeg();
             int nemnullaraktarszama;
             int utakszama = 0;
@@ -89,7 +80,7 @@ public class Main {
             outer: while (mennyiKellMeg() != 0) {
                 utakszama++;
                 nemnullaraktarszama = legkozelebbiNemNullaRaktar();
-
+                megtettKMek += mennyiTav(70,23,raktarak.get(nemnullaraktarszama).getLat(),raktarak.get(nemnullaraktarszama).getLon());
                 szanzsakokszama= szanteherbiras / zsaksuly;
                 while (szanzsakokszama != 0) {
 
@@ -113,6 +104,7 @@ public class Main {
                 }
                 mennyikell=mennyiKellMeg();
             }
+            System.out.printf("Utolso raktarba vitt zsakok: %d, megtett kilometerek: %d, megtett utakszama: %d \n",szanzsakokszama, megtettKMek, utakszama);
         } catch (IOException e) {
             e.printStackTrace();
         }
