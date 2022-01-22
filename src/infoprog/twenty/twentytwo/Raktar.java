@@ -5,19 +5,17 @@ public class Raktar {
 	private int lon;
 	private int maxcap; //
 	private int keszlet; // mennyi fer meg
-	private int tavlapfoldre;
 
 	public Raktar() {
 
 	}
 
-	public Raktar(int lat, int lon, int maxcap, int tavlapfoldre) {
+	public Raktar(int lat, int lon, int maxcap) {
 		super();
 		this.lat = lat;
 		this.lon = lon;
 		this.maxcap = maxcap;
 		this.keszlet = maxcap;
-		this.tavlapfoldre = tavlapfoldre;
 	}
 
 	public int getLat() {
@@ -46,13 +44,6 @@ public class Raktar {
 	}
 	public void setKeszlet(int keszlet) {
 		this.keszlet = keszlet;
-	}
-
-	public int getTavlapfoldre() {
-		return tavlapfoldre;
-	}
-	public void setTavlapfoldre(int tavlapfoldre) {
-		this.tavlapfoldre = tavlapfoldre;
 	}
 
 	public int throw_() {
