@@ -22,7 +22,7 @@ public class Main {
     public static void main(String[] args) {
         beolv();
         feladat1_2();
-        System.out.println(mennyiTav(55,36,49,20));
+        System.out.println(mennyitav(55,36,49,20));
     }
 
 
@@ -43,7 +43,20 @@ public class Main {
             outer: while (mennyiKellMeg() != 0) {
                 utakszama++;
                 nemnullaraktarszama = legkozelebbiNemNullaRaktar();
-                megtettKMek += 2*mennyiTav(70,23,raktarak.get(nemnullaraktarszama).getLat(),raktarak.get(nemnullaraktarszama).getLon());
+                /*
+                  option 1: Line 50
+                  option 2: Line 54,80
+                  option 3: Line 54,68
+
+                  option 1:+5 diff
+                  option 2:-2420 diff
+                  option 3:-1552 diff
+                 */
+                //option 1
+                megtettKMek += 2*mennyitav2(70,23,raktarak.get(nemnullaraktarszama).getLat(),raktarak.get(nemnullaraktarszama).getLon());
+                //option 2
+                //option 3
+                //megtettKMek += mennyiTav(70,23,raktarak.get(nemnullaraktarszama).getLat(),raktarak.get(nemnullaraktarszama).getLon());
                 szanzsakokszama= szanteherbiras / zsaksuly;
                 while (szanzsakokszama != 0) {
                     System.out.printf("Erintett raktar: %d, %d; eddig megtett KM-ek: %d \n", raktarak.get(nemnullaraktarszama).getLat(),raktarak.get(nemnullaraktarszama).getLon(), megtettKMek);
@@ -51,11 +64,12 @@ public class Main {
                         szanzsakokszama -= raktarak.get(nemnullaraktarszama).getKeszlet();
                         raktarak.get(nemnullaraktarszama).setKeszlet(0);
                         nemnullaraktarszama++;
-                        //megtettKMek += mennyiTav(raktarak.get(nemnullaraktarszama-1).getLat(),raktarak.get(nemnullaraktarszama-1).getLon(),raktarak.get(nemnullaraktarszama).getLat(),raktarak.get(nemnullaraktarszama).getLon());
                         // menjel ma' tovabb
                     } else {
                         raktarak.get(nemnullaraktarszama).setKeszlet(raktarak.get(nemnullaraktarszama).getKeszlet() - szanzsakokszama);
                         szanzsakokszama = 0;
+                        //option 3
+                        //megtettKMek += mennyiTav(raktarak.get(nemnullaraktarszama-1).getLat(),raktarak.get(nemnullaraktarszama-1).getLon(),raktarak.get(nemnullaraktarszama).getLat(),raktarak.get(nemnullaraktarszama).getLon());
                         //menjel ma' haza
                     }
                     if (nemnullaraktarszama == raktarak.size()) {
@@ -67,10 +81,12 @@ public class Main {
                     }
                 }
                 System.out.println("Back to base");
-//                megtettKMek += mennyiTav(70,23,raktarak.get(nemnullaraktarszama).getLat(),raktarak.get(nemnullaraktarszama).getLon());
+                //option 2
+                //megtettKMek += mennyiTav(70,23,raktarak.get(nemnullaraktarszama).getLat(),raktarak.get(nemnullaraktarszama).getLon());
                 mennyikell=mennyiKellMeg();
             }
-            System.out.printf("Utolso raktarba vitt zsakok: %d, megtett kilometerek: %d, megtett utakszama: %d \n",szanzsakokszama, megtettKMek, utakszama);
+            //theoretical distance 24259 for raktar2.txt
+            System.out.printf("Utolso raktarba vitt zsakok: %d, megtett kilometerek: %d,elteres az teoretikustol: %d, megtett utakszama: %d \n",szanzsakokszama, megtettKMek,megtettKMek-24259 , utakszama);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -96,9 +112,10 @@ public class Main {
         }
         return nemnullaraktarszama;
     }
+
     // forras: https://www.movable-type.co.uk/scripts/latlong.html
     // haversine egyenlet
-    public static int mennyiTav(int lat1, int lon1, int lat2, int lon2) {
+    public static int mennyitav(int lat1, int lon1, int lat2, int lon2) {
         final double r = 6371e3;
         double Phi1 = lat1 * Math.PI/180;
         double Phi2 = lat2 * Math.PI/180;
@@ -127,6 +144,14 @@ public class Main {
         double y = (Phi2-Phi1);
         return Math.sqrt(x*x + y*y) * r;
     }
+
+    //tenyleg pitagorasz
+    public static int mennyitav2_5(int lat1, int lat2, int lon1, int lon2) {
+        double x = (lon2-lon1);
+        double y = (lat2-lat1);
+        return (int) (Math.sqrt(x*x + y*y ) * 1000);
+    }
+
 
     public static void beolv() {
         try {
