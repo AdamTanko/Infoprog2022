@@ -12,7 +12,7 @@ import java.util.Scanner;
 
 public class Main {
 
-    private static final String filepath = "data files/raktar2.txt";
+    private static final String filepath = "data files/raktar.txt";
     //kilogrammban
     private static final int zsaksuly = 20;
     private static final int szanteherbiras = 2500;
@@ -30,6 +30,7 @@ public class Main {
 
     //TODO: Megtett kilometerek pontos szamolasa
     public static void feladat1_2(){
+        System.out.println("===1. Feladat===");
         try {
             if (raktarak.size() == 0) {
                 beolv();
@@ -53,7 +54,7 @@ public class Main {
                   option 3:-1552 diff
                  */
                 //option 1
-                megtettKMek += 2*mennyitav2(70,23,raktarak.get(nemnullaraktarszama).getLat(),raktarak.get(nemnullaraktarszama).getLon());
+                megtettKMek += 2*mennyitav(70,23,raktarak.get(nemnullaraktarszama).getLat(),raktarak.get(nemnullaraktarszama).getLon());
                 //option 2
                 //option 3
                 //megtettKMek += mennyiTav(70,23,raktarak.get(nemnullaraktarszama).getLat(),raktarak.get(nemnullaraktarszama).getLon());
