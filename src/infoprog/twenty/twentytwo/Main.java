@@ -12,7 +12,7 @@ import java.util.Scanner;
 
 public class Main {
 
-    private static final String filepath = "data files/raktar.txt";
+    private static final String filepath = "data files/raktar2.txt";
     //kilogrammban
     private static final int zsaksuly = 20;
     private static final int szanteherbiras = 2500;
@@ -22,7 +22,8 @@ public class Main {
     public static void main(String[] args) {
         beolv();
         feladat1_2();
-        System.out.println(mennyitav(55,36,49,20));
+//        feladat3();
+//        feladat4();
     }
 
 
@@ -94,6 +95,46 @@ public class Main {
         System.out.println("lol");
     }
 
+    public static void feladat3() {
+
+    }
+
+    /**
+     *
+     *
+     * @param option ha igaz akkor a szan kapcitasa vegtelen, ha hamis akkor veges
+     */
+    public static void feladat4(boolean option) {
+        if (option) {
+            while (mennyiKellMeg() != 0) {
+
+            }
+        } else {
+            while (mennyiKellMeg() != 0) {
+
+            }
+        }
+    }
+
+    public static int melyikALegkozelebbRaktar(int firstidx) {
+        int firstlat = raktarak.get(firstidx).getLat();
+        int firstlon = raktarak.get(firstidx).getLon();
+        int elozotav = 0;
+        int legkozelebbidx = 0;
+
+        for (int i = 0; i < raktarak.size(); i++) {
+            if (elozotav > mennyitav(firstlat,firstlon,raktarak.get(i).getLat(),raktarak.get(i).getLon())) {
+                if(raktarak.get(i).getKeszlet() == 0){
+                    continue;
+                }
+                elozotav = mennyitav(firstlat,firstlon,raktarak.get(i).getLat(),raktarak.get(i).getLon());
+                legkozelebbidx = i;
+            }
+        }
+
+        return legkozelebbidx;
+    }
+
     public static int mennyiKellMeg() {
     	int kellendozsak = 0;
     	for (Raktar raktar : raktarak) {
@@ -116,6 +157,9 @@ public class Main {
 
     // forras: https://www.movable-type.co.uk/scripts/latlong.html
     // haversine egyenlet
+
+    //Megjegyzes: ezt az egyenletet hasznalom mert ezek valosagosnak tuno ertekeket ad vissza
+
     public static int mennyitav(int lat1, int lon1, int lat2, int lon2) {
         final double r = 6371e3;
         double Phi1 = lat1 * Math.PI/180;
@@ -130,29 +174,6 @@ public class Main {
 
         return (int)(r * c)/1000; // kilometerben
     }
-
-    // forras: https://www.movable-type.co.uk/scripts/latlong.html
-    // pitagorasz tetele szerint
-    public static double mennyitav2(int lat1, int lat2, int lon1, int lon2) {
-        final double r = 6371e3;
-        double Phi1 = lat1 * Math.PI/180;
-        double Phi2 = lat2 * Math.PI/180;
-
-        double Lambda1 = lon1 * Math.PI/180;
-        double Lambda2 = lon2 * Math.PI/180;
-
-        double x = (Lambda2-Lambda1) * Math.cos((Phi1+Phi2)/2);
-        double y = (Phi2-Phi1);
-        return Math.sqrt(x*x + y*y) * r;
-    }
-
-    //tenyleg pitagorasz
-    public static int mennyitav2_5(int lat1, int lat2, int lon1, int lon2) {
-        double x = (lon2-lon1);
-        double y = (lat2-lat1);
-        return (int) (Math.sqrt(x*x + y*y ) * 1000);
-    }
-
 
     public static void beolv() {
         try {
