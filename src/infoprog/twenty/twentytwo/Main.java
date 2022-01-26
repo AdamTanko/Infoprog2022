@@ -12,7 +12,7 @@ import java.util.Scanner;
 
 public class Main {
 
-    private static final String filepath = "data files/raktar2.txt";
+    private static final String filepath = "C:\\Users\\Tanulo\\Documents\\Adam Tanko 1.G\\eclipse\\Infoprog2022-main.zip_expanded\\Infoprog2022-main\\data files\\raktar3";
     //kilogrammban
     private static final int zsaksuly = 20;
     private static final int szanteherbiras = 2500;
@@ -21,21 +21,22 @@ public class Main {
 
     public static void main(String[] args) {
         beolv();
-        feladat1_2();
-//        feladat3();
+//        feladat1_2();
+        feladat3();
 //        feladat4();
     }
 
 
 
 
-    //TODO: Megtett kilometerek pontos szamolasa
     public static void feladat1_2(){
         System.out.println("===1. Feladat===");
         try {
             if (raktarak.size() == 0) {
                 beolv();
             }
+            raktarak.get(raktarak.size()-1).setKeszlet(0);
+            raktarak.get(raktarak.size()-1).setMaxcap(0);
             int szanzsakokszama = szanteherbiras / zsaksuly;
             int mennyikell = mennyiKellMeg();
             int nemnullaraktarszama;
@@ -45,20 +46,7 @@ public class Main {
             outer: while (mennyiKellMeg() != 0) {
                 utakszama++;
                 nemnullaraktarszama = legkozelebbiNemNullaRaktar();
-                /*
-                  option 1: Line 50
-                  option 2: Line 54,80
-                  option 3: Line 54,68
-
-                  option 1:+5 diff
-                  option 2:-2420 diff
-                  option 3:-1552 diff
-                 */
-                //option 1
                 megtettKMek += 2*mennyitav(70,23,raktarak.get(nemnullaraktarszama).getLat(),raktarak.get(nemnullaraktarszama).getLon());
-                //option 2
-                //option 3
-                //megtettKMek += mennyiTav(70,23,raktarak.get(nemnullaraktarszama).getLat(),raktarak.get(nemnullaraktarszama).getLon());
                 szanzsakokszama= szanteherbiras / zsaksuly;
                 while (szanzsakokszama != 0) {
                     System.out.printf("Erintett raktar: %d, %d; eddig megtett KM-ek: %d \n", raktarak.get(nemnullaraktarszama).getLat(),raktarak.get(nemnullaraktarszama).getLon(), megtettKMek);
@@ -70,8 +58,6 @@ public class Main {
                     } else {
                         raktarak.get(nemnullaraktarszama).setKeszlet(raktarak.get(nemnullaraktarszama).getKeszlet() - szanzsakokszama);
                         szanzsakokszama = 0;
-                        //option 3
-                        //megtettKMek += mennyiTav(raktarak.get(nemnullaraktarszama-1).getLat(),raktarak.get(nemnullaraktarszama-1).getLon(),raktarak.get(nemnullaraktarszama).getLat(),raktarak.get(nemnullaraktarszama).getLon());
                         //menjel ma' haza
                     }
                     if (nemnullaraktarszama == raktarak.size()) {
@@ -83,12 +69,10 @@ public class Main {
                     }
                 }
                 System.out.println("Back to base");
-                //option 2
-                //megtettKMek += mennyiTav(70,23,raktarak.get(nemnullaraktarszama).getLat(),raktarak.get(nemnullaraktarszama).getLon());
                 mennyikell=mennyiKellMeg();
             }
-            //theoretical distance 24259 for raktar2.txt
-            System.out.printf("Utolso raktarba vitt zsakok: %d, megtett kilometerek: %d,elteres az teoretikustol: %d, megtett utakszama: %d \n",szanzsakokszama, megtettKMek,megtettKMek-24259 , utakszama);
+            //theoretical distance 24254 for raktar2.txt
+            System.out.printf("Utolso raktarba vitt zsakok: %d, megtett kilometerek: %d, megtett utakszama: %d \n",szanzsakokszama, megtettKMek, utakszama);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -96,23 +80,40 @@ public class Main {
     }
 
     public static void feladat3() {
-
+    	System.out.println("===3. Feladat===");
+    	if (raktarak.size() == 0) {
+            beolv();
+        }
+        int megtettKMek = 0;
+        int szanzsakokszama = szanteherbiras / zsaksuly;
+        int aktualisraktar = 0;
+        
+    	for (int i = 1; i < raktarak.size(); i++) {
+    		if (raktarak.get(i).getKeszlet() == 0) {
+    			continue;
+    		}
+            	
+    		megtettKMek += mennyitav(raktarak.get(aktualisraktar).getLat(),raktarak.get(aktualisraktar).getLon(),raktarak.get(i).getLat(),raktarak.get(i).getLon());
+    		System.out.printf("Erintett raktar: %d, %d; eddig megtett KM-ek: %d \n", raktarak.get(i).getLat(),raktarak.get(i).getLon(), megtettKMek);
+    		//  		raktarak.get(i).setKeszlet(0);
+    		szanzsakokszama -= raktarak.get(i).getKeszlet();
+    		if (szanzsakokszama >= raktarak.get(i+1).getKeszlet()) {
+    			aktualisraktar = i;
+    		} else {
+    			aktualisraktar = 0;
+    			megtettKMek += mennyitav(70,23,raktarak.get(i).getLat(),raktarak.get(i).getLon());
+    			System.out.println("back to base");
+    		}
+    		
+    		
+		} 	
+    	
+    	
     }
 
-    /**
-     *
-     *
-     * @param option ha igaz akkor a szan kapcitasa vegtelen, ha hamis akkor veges
-     */
-    public static void feladat4(boolean option) {
-        if (option) {
-            while (mennyiKellMeg() != 0) {
-
-            }
-        } else {
-            while (mennyiKellMeg() != 0) {
-
-            }
+    public static void feladat4() {
+        while (mennyiKellMeg() !=0) {
+        	
         }
     }
 
@@ -192,6 +193,11 @@ public class Main {
                 } else if (!sc2.hasNextLine()){
                     r.setLat(Integer.parseInt(sc.next()));
                     r.setLon(Integer.parseInt(sc.next()));
+                    if(sc.hasNextInt()) {
+                    	int maxcapkeszlet = sc.nextInt();
+                        r.setMaxcap(maxcapkeszlet);
+                        r.setKeszlet(maxcapkeszlet);
+                    }
                 } else {
                     r.setLat(Integer.parseInt(sc.next()));
                     r.setLon(Integer.parseInt(sc.next()));
