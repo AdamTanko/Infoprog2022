@@ -12,18 +12,20 @@ import java.util.Scanner;
 
 public class Main {
 
-    private static final String filepath = "C:\\Users\\Tanulo\\Documents\\Adam Tanko 1.G\\eclipse\\Infoprog2022-main.zip_expanded\\Infoprog2022-main\\data files\\raktar3";
+    private static final String filepath = "data files/raktar2.txt";
     //kilogrammban
     private static final int zsaksuly = 20;
     private static final int szanteherbiras = 2500;
 
-    private static final ArrayList<Raktar> raktarak = new ArrayList<>();
+    public static final ArrayList<Raktar> raktarak = new ArrayList<>();
 
     public static void main(String[] args) {
         beolv();
-//        feladat1_2();
-        feladat3();
-//        feladat4();
+  //      feladat1_2();
+        //feladat3();
+        feladat4();
+        int[][] tavok = raktarakkoztitav();
+
     }
 
 
@@ -38,7 +40,6 @@ public class Main {
             raktarak.get(raktarak.size()-1).setKeszlet(0);
             raktarak.get(raktarak.size()-1).setMaxcap(0);
             int szanzsakokszama = szanteherbiras / zsaksuly;
-            int mennyikell = mennyiKellMeg();
             int nemnullaraktarszama;
             int utakszama = 0;
             int megtettKMek = 0;
@@ -69,7 +70,6 @@ public class Main {
                     }
                 }
                 System.out.println("Back to base");
-                mennyikell=mennyiKellMeg();
             }
             //theoretical distance 24254 for raktar2.txt
             System.out.printf("Utolso raktarba vitt zsakok: %d, megtett kilometerek: %d, megtett utakszama: %d \n",szanzsakokszama, megtettKMek, utakszama);
@@ -79,6 +79,7 @@ public class Main {
         System.out.println("lol");
     }
 
+    // feltetel: egyik raktarban sincs tobb zsak mint a szan egyszerre tud vinni
     public static void feladat3() {
     	System.out.println("===3. Feladat===");
     	if (raktarak.size() == 0) {
@@ -88,7 +89,7 @@ public class Main {
         int szanzsakokszama = szanteherbiras / zsaksuly;
         int aktualisraktar = 0;
         
-    	for (int i = 1; i < raktarak.size(); i++) {
+    	for (int i = 1; i < raktarak.size()-1; i++) {
     		if (raktarak.get(i).getKeszlet() == 0) {
     			continue;
     		}
@@ -112,9 +113,13 @@ public class Main {
     }
 
     public static void feladat4() {
-        while (mennyiKellMeg() !=0) {
-        	
+        System.out.println("===4. Feladat===");
+        int[][] tavok = raktarakkoztitav();
+
+        for (int i = 0; i < tavok.length; i++) {
+            
         }
+        
     }
 
     public static int melyikALegkozelebbRaktar(int firstidx) {
@@ -142,6 +147,18 @@ public class Main {
 			kellendozsak += raktar.getKeszlet();
 		}
     	return kellendozsak;
+    }
+
+    public static int[][] raktarakkoztitav() {
+        int[][] tavok= new int[raktarak.size()][raktarak.size()];
+        for (int i = 0; i < raktarak.size(); i++) {
+            for (int j = 0; j < raktarak.size(); j++) {
+                int tav = mennyitav(raktarak.get(i).getLat(),raktarak.get(i).getLon(),raktarak.get(j).getLat(),raktarak.get(j).getLon());
+                tavok[i][j] = tav;
+                System.out.println(tav);
+            }
+        }
+        return tavok;
     }
 
     public static int legkozelebbiNemNullaRaktar() {
