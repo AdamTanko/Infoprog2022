@@ -24,7 +24,6 @@ public class Main {
   //      feladat1_2();
         //feladat3();
         feladat4();
-        int[][] tavok = raktarakkoztitav();
 
     }
 
@@ -80,6 +79,11 @@ public class Main {
     }
 
     // feltetel: egyik raktarban sincs tobb zsak mint a szan egyszerre tud vinni
+    /*
+    Hány kilométert tesz meg a szán összesen, ha az 1. feladatban megírt szállítási algoritmust úgy
+    módosítjuk, hogy a szán egy adott raktár feltöltése után visszatér Lappföldre, ha a következő raktár
+    feltöltéséhez nincs elegendő zsákja?
+     */
     public static void feladat3() {
     	System.out.println("===3. Feladat===");
     	if (raktarak.size() == 0) {
@@ -112,14 +116,18 @@ public class Main {
     	
     }
 
+    /*
+    Határozzátok meg a raktárak bejárásának azt a sorrendjét, ahol az első feltöltött raktár a lappföldi
+    raktárhoz legközelebbi, és minden i+1-edik raktárhely az i-edikhez legközelebb eső, eddig még fel nem
+    töltött raktár. Előfordulhat, hogy a legközelebbi raktár meghatározása többértékű hozzárendelés. Az
+    összes esetet figyelembe véve, adjátok meg a lehetséges bejárási sorrendeket! Most tételezzük fel,
+    hogy a szán kapacitása végtelen (csak egyszer töltik fel induláskor) és nem kell visszafordulni
+    Lappföldre.
+     */
     public static void feladat4() {
         System.out.println("===4. Feladat===");
         int[][] tavok = raktarakkoztitav();
 
-        for (int i = 0; i < tavok.length; i++) {
-            
-        }
-        
     }
 
     public static int melyikALegkozelebbRaktar(int firstidx) {
