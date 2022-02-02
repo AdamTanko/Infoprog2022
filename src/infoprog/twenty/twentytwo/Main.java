@@ -12,7 +12,7 @@ import java.util.Scanner;
 
 public class Main {
 
-    private static final String filepath = "data files/raktar2.txt";
+    private static final String filepath = "C:\\Users\\Tanulo\\Documents\\Adam Tanko 1.G\\eclipse\\Infoprog2022-main(1).zip_expanded\\Infoprog2022-main\\data files\\raktar.txt";
     //kilogrammban
     private static final int zsaksuly = 20;
     private static final int szanteherbiras = 2500;
@@ -21,10 +21,17 @@ public class Main {
 
     public static void main(String[] args) {
         beolv();
-  //      feladat1_2();
+  //    feladat1_2();
         //feladat3();
         feladat4();
-
+        int[][] tav =raktarakkoztitav();
+        System.out.println();
+        for (int i = 0; i < tav.length; i++) {
+			for (int j = 0; j < tav.length; j++) {
+				System.out.print(tav[i][j] + " ");
+			}
+			System.out.println();
+		}
     }
 
 
@@ -124,11 +131,59 @@ public class Main {
     hogy a szán kapacitása végtelen (csak egyszer töltik fel induláskor) és nem kell visszafordulni
     Lappföldre.
      */
-    public static void feladat4() {
-        System.out.println("===4. Feladat===");
-        int[][] tavok = raktarakkoztitav();
+	public static void feladat4() {
+		System.out.println("===4. Feladat===");
+//		int[][] tavok = raktarakkoztitav();
+		int[][] tavok = {{0,120,100,500,100},
+						 {120, 0, 200, 25, 45},
+						 {100, 200, 0, 40, 200},
+						 {500,25, 40, 0, 420},
+						 {100,45,200, 420, 0}
+		};
+		ArrayList<ArrayList<Integer>> utvonalak = new ArrayList<>();
+		utvonalak.add(new ArrayList<Integer>());
+		int aktualisUtvonal = 0;
+		int ittVanAMinTav = 0;
 
-    }
+		utvonalak.get(0).add(0);
+		while (aktualisUtvonal < utvonalak.size()) {
+
+			for (int j = 0; j < tavok.length - 1; j++) {
+				int aktsor = utvonalak.get(0).get(utvonalak.get(0).size() - 1);
+				int mintav = Integer.MAX_VALUE;
+				for (int i = 0; i < tavok.length; i++) {
+
+					if ((tavok[aktsor][i] < mintav) && !(utvonalak.get(0).contains(i)) && (tavok[aktsor][i] != 0)) {
+						mintav = tavok[aktsor][i];
+//						ittVanAMinTav = i;
+					}
+				}
+				int elso = 0;
+				boolean volteMarTalalva = false;
+				for (int i = 0; i < tavok.length; i++) {
+					if ((tavok[aktsor][i] == mintav) && !(utvonalak.get(aktualisUtvonal).contains(i)) && !volteMarTalalva ) {
+					elso = i;
+						volteMarTalalva = true;
+						continue;
+					}
+					if ((tavok[aktsor][i] == mintav) && !(utvonalak.get(aktualisUtvonal).contains(i)) ) {
+						ArrayList<Integer> list = new ArrayList<>(utvonalak.get(aktualisUtvonal));
+						list.add(i);
+						utvonalak.add(list);
+					}
+				}
+				utvonalak.get(aktualisUtvonal).add(elso);
+				
+			}
+			aktualisUtvonal++;
+		}
+
+		System.out.println("lol");
+		for (int i = 0; i < utvonalak.size(); i++) {
+			System.out.println(utvonalak.get(i).toString());
+		}
+		
+	}
 
     public static int melyikALegkozelebbRaktar(int firstidx) {
         int firstlat = raktarak.get(firstidx).getLat();
@@ -156,14 +211,14 @@ public class Main {
 		}
     	return kellendozsak;
     }
-
+    
     public static int[][] raktarakkoztitav() {
         int[][] tavok= new int[raktarak.size()][raktarak.size()];
         for (int i = 0; i < raktarak.size(); i++) {
             for (int j = 0; j < raktarak.size(); j++) {
                 int tav = mennyitav(raktarak.get(i).getLat(),raktarak.get(i).getLon(),raktarak.get(j).getLat(),raktarak.get(j).getLon());
                 tavok[i][j] = tav;
-                System.out.println(tav);
+               // System.out.println(tav);
             }
         }
         return tavok;
@@ -184,7 +239,7 @@ public class Main {
     // forras: https://www.movable-type.co.uk/scripts/latlong.html
     // haversine egyenlet
 
-    //Megjegyzes: ezt az egyenletet hasznalom mert ezek valosagosnak tuno ertekeket ad vissza
+   
 
     public static int mennyitav(int lat1, int lon1, int lat2, int lon2) {
         final double r = 6371e3;
