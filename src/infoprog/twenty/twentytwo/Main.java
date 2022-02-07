@@ -12,7 +12,7 @@ import java.util.Scanner;
 
 public class Main {
 
-    private static final String filepath = "C:\\Users\\Tanulo\\Documents\\Adam Tanko 1.G\\eclipse\\Infoprog2022-main(1).zip_expanded\\Infoprog2022-main\\data files\\raktar.txt";
+    private static final String filepath = "data files/raktar2.txt";
     //kilogrammban
     private static final int zsaksuly = 20;
     private static final int szanteherbiras = 2500;
@@ -24,14 +24,6 @@ public class Main {
   //    feladat1_2();
         //feladat3();
         feladat4();
-        int[][] tav =raktarakkoztitav();
-        System.out.println();
-        for (int i = 0; i < tav.length; i++) {
-			for (int j = 0; j < tav.length; j++) {
-				System.out.print(tav[i][j] + " ");
-			}
-			System.out.println();
-		}
     }
 
 
@@ -140,20 +132,19 @@ public class Main {
 						 {500,25, 40, 0, 420},
 						 {100,45,200, 420, 0}
 		};
-		ArrayList<ArrayList<Integer>> utvonalak = new ArrayList<>();
-		utvonalak.add(new ArrayList<Integer>());
-		int aktualisUtvonal = 0;
-		int ittVanAMinTav = 0;
 
-		utvonalak.get(0).add(0);
+		ArrayList<ArrayList<Integer>> utvonalak = new ArrayList<>();
+		utvonalak.add(new ArrayList<>());
+		int aktualisUtvonal = 0;
+
+        utvonalak.get(0).add(0);
 		while (aktualisUtvonal < utvonalak.size()) {
 
 			for (int j = 0; j < tavok.length - 1; j++) {
-				int aktsor = utvonalak.get(0).get(utvonalak.get(0).size() - 1);
+				int aktsor = utvonalak.get(aktualisUtvonal).get(utvonalak.get(aktualisUtvonal).size() - 1);
 				int mintav = Integer.MAX_VALUE;
 				for (int i = 0; i < tavok.length; i++) {
-
-					if ((tavok[aktsor][i] < mintav) && !(utvonalak.get(0).contains(i)) && (tavok[aktsor][i] != 0)) {
+					if ((tavok[aktsor][i] < mintav) && !(utvonalak.get(aktualisUtvonal).contains(i)) && (tavok[aktsor][i] != 0)) {
 						mintav = tavok[aktsor][i];
 //						ittVanAMinTav = i;
 					}
@@ -162,7 +153,7 @@ public class Main {
 				boolean volteMarTalalva = false;
 				for (int i = 0; i < tavok.length; i++) {
 					if ((tavok[aktsor][i] == mintav) && !(utvonalak.get(aktualisUtvonal).contains(i)) && !volteMarTalalva ) {
-					elso = i;
+					    elso = i;
 						volteMarTalalva = true;
 						continue;
 					}
@@ -175,36 +166,18 @@ public class Main {
 				utvonalak.get(aktualisUtvonal).add(elso);
 				
 			}
+
 			aktualisUtvonal++;
 		}
 
 		System.out.println("lol");
-		for (int i = 0; i < utvonalak.size(); i++) {
-			System.out.println(utvonalak.get(i).toString());
-		}
+        for (ArrayList<Integer> integers : utvonalak) {
+            System.out.println(integers.toString());
+        }
 		
 	}
 
-    public static int melyikALegkozelebbRaktar(int firstidx) {
-        int firstlat = raktarak.get(firstidx).getLat();
-        int firstlon = raktarak.get(firstidx).getLon();
-        int elozotav = 0;
-        int legkozelebbidx = 0;
-
-        for (int i = 0; i < raktarak.size(); i++) {
-            if (elozotav > mennyitav(firstlat,firstlon,raktarak.get(i).getLat(),raktarak.get(i).getLon())) {
-                if(raktarak.get(i).getKeszlet() == 0){
-                    continue;
-                }
-                elozotav = mennyitav(firstlat,firstlon,raktarak.get(i).getLat(),raktarak.get(i).getLon());
-                legkozelebbidx = i;
-            }
-        }
-
-        return legkozelebbidx;
-    }
-
-    public static int mennyiKellMeg() {
+	public static int mennyiKellMeg() {
     	int kellendozsak = 0;
     	for (Raktar raktar : raktarak) {
 			kellendozsak += raktar.getKeszlet();
