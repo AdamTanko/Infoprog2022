@@ -12,7 +12,7 @@ import java.util.Scanner;
 
 public class Main {
 
-    private static final String filepath = "data files/raktar2.txt";
+    private static final String filepath = "data files/MOCK_DATA.csv";
     //kilogrammban
     private static final int zsaksuly = 20;
     private static final int szanteherbiras = 2500;
@@ -125,18 +125,20 @@ public class Main {
      */
 	public static void feladat4() {
 		System.out.println("===4. Feladat===");
-//		int[][] tavok = raktarakkoztitav();
-		int[][] tavok = {{0,120,100,500,100},
-						 {120, 0, 200, 25, 45},
-						 {100, 200, 0, 40, 200},
-						 {500,25, 40, 0, 420},
-						 {100,45,200, 420, 0}
-		};
+        int[][] tavok = raktarakkoztitav();
+//
+//		int[][] tavok = {{0,120,100,500,100},
+//						 {120, 0, 200, 25, 45},
+//						 {100, 200, 0, 40, 200},
+//						 {500,25, 40, 0, 420},
+//						 {100,45,200, 420, 0}
+//		};
+
 
 		ArrayList<ArrayList<Integer>> utvonalak = new ArrayList<>();
 		utvonalak.add(new ArrayList<>());
 		int aktualisUtvonal = 0;
-
+        int futatasszama= 0;
         utvonalak.get(0).add(0);
 		while (aktualisUtvonal < utvonalak.size()) {
 
@@ -168,6 +170,8 @@ public class Main {
 			}
 
 			aktualisUtvonal++;
+			futatasszama++;
+            System.out.printf("ennyi utvonal van: %d , furasok: %d \n",utvonalak.size(), futatasszama);
 		}
 
 		System.out.println("lol");
@@ -184,7 +188,9 @@ public class Main {
 		}
     	return kellendozsak;
     }
-    
+
+
+    // make work with 2D arraylist?
     public static int[][] raktarakkoztitav() {
         int[][] tavok= new int[raktarak.size()][raktarak.size()];
         for (int i = 0; i < raktarak.size(); i++) {
