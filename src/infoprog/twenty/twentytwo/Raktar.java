@@ -9,7 +9,15 @@ public class Raktar {
 	public Raktar() {
 
 	}
-
+	
+	
+	public Raktar(Raktar r) {
+		this.lat = r.lat;
+		this.lon = r.lon;
+		this.maxcap = r.maxcap;
+		this.keszlet = r.maxcap;
+	}
+	
 	public Raktar(int lat, int lon, int maxcap) {
 		super();
 		this.lat = lat;

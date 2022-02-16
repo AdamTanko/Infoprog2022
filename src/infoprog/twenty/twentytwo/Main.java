@@ -18,14 +18,17 @@ public class Main {
 	private static final int zsaksuly = 20;
 	private static final int szanteherbiras = 2500;
 
-	public static final ArrayList<Raktar> raktarak = new ArrayList<>();
+	public static ArrayList<Raktar> raktarak = new ArrayList<Raktar>();
+
 
 
 	public static void main(String[] args) {
         beolv();
+        Scanner sc = new Scanner(System.in);
+        
         while (true) {
             System.out.print("╒=======================╕\n" +
-                             "| [32mInfoprog 2022[0m         |\n" +
+                             "| \033[1;32mInfoprog 2022\033[1;0m         |\n" +
                              "|                       |\n" +
                              "| Egy szám beírásával   |\n" +
                              "| lehet kiválasztani,   |\n" +
@@ -34,30 +37,40 @@ public class Main {
                              "╘=======================╛\n" +
                              " 0 - kilépés, 1 - 1.feladat és 2.feladat, 3 - 3.feladat, 4 - 4.feladat, 5 - 5.feladat \n" +
                              "Ide: ");
-            Scanner sc = new Scanner(System.in);
+            
             int x = Integer.parseInt(sc.next());
-            switch (x) {
-                case 0:
-                    System.out.println("Kilépés...");
-                    return;
-                case 1:
-					System.out.println("===1/2. Feladat===");
-					feladat1_2();
-                    break;
-                case 3:
-					System.out.println("===3. Feladat===");
-                    feladat3();
-                    break;
-                case 4:
-					System.out.println("===4. Feladat===");
-					feladat4();
-                    break;
-                case 5:
-					System.out.println("===5. Feladat===");
-					feladat5(feladat4());
-                    break;
+			switch (x) {
+			case 0:
+				System.out.println("Kilépés...");
+				sc.close();
+				return;
+			case 1:
+				raktarak = new ArrayList<>();
+				beolv();
+				System.out.println("===1/2. Feladat===");
+				feladat1_2();
+				break;
+			case 3:
+				raktarak = new ArrayList<>();
+				beolv();
+				System.out.println("===3. Feladat===");
+				feladat3();
+				break;
+			case 4:
+				raktarak = new ArrayList<>();
+				beolv();
+				System.out.println("===4. Feladat===");
+				feladat4();
+				break;
+			case 5:
+				raktarak = new ArrayList<>();
+				beolv();
+				System.out.println("===5. Feladat===");
+				feladat5(feladat4());
+				break;
 
-            }
+			}
+            
             while (true) {
                 try {
                     System.out.println("Nyomja meg az \"ENTER\"-t ha tovább akar menni");
@@ -74,7 +87,7 @@ public class Main {
 
 
         }
-
+       
     }
 
 
@@ -91,16 +104,16 @@ public class Main {
 			outer: while (mennyiKellMeg(raktarak) != 0) {
 				utakszama++;
 				nemnullaraktarszama = legkozelebbiNemNullaKeszlet(raktarak);
-				megtettKMek += 2 * mennyitav(70, 23, raktarak.get(nemnullaraktarszama).getLat(),
-						raktarak.get(nemnullaraktarszama).getLon());
+				megtettKMek += mennyitav(raktarak.get(0).getLat(), raktarak.get(0).getLon(), raktarak.get(nemnullaraktarszama).getLat(), raktarak.get(nemnullaraktarszama).getLon());
 				szanzsakokszama = szanteherbiras / zsaksuly;
 				while (szanzsakokszama != 0) {
-					System.out.printf("Erintett raktar: %d, %d; eddig megtett KM-ek: %d \n",
-                            raktarak.get(nemnullaraktarszama).getLat(), raktarak.get(nemnullaraktarszama).getLon(), megtettKMek);
+					System.out.printf("Erintett raktar: %d, %d; eddig megtett KM-ek: %d \n", raktarak.get(nemnullaraktarszama).getLat(), raktarak.get(nemnullaraktarszama).getLon(), megtettKMek);
 					if (szanzsakokszama > raktarak.get(nemnullaraktarszama).getKeszlet()) {
 						szanzsakokszama -= raktarak.get(nemnullaraktarszama).getKeszlet();
 						raktarak.get(nemnullaraktarszama).setKeszlet(0);
-						nemnullaraktarszama++;
+						int aktraktar = nemnullaraktarszama;
+						nemnullaraktarszama = legkozelebbiNemNullaKeszlet(raktarak);
+						megtettKMek += mennyitav(raktarak.get(aktraktar).getLat(), raktarak.get(aktraktar).getLon(), raktarak.get(nemnullaraktarszama).getLat(), raktarak.get(nemnullaraktarszama).getLon());
 						// menjel ma' tovabb
 					} else {
 						raktarak.get(nemnullaraktarszama).
@@ -117,6 +130,7 @@ public class Main {
 						break outer;
 					}
 				}
+				megtettKMek += mennyitav(raktarak.get(nemnullaraktarszama).getLat(), raktarak.get(nemnullaraktarszama).getLon(), raktarak.get(0).getLat(), raktarak.get(0).getLon());			
 				System.out.println("Back to base");
 			}
 			// theoretical distance 24254 for raktar2.txt
@@ -128,44 +142,49 @@ public class Main {
 		System.out.println("lol");
 	}
 
-	// feltetel: egyik raktarban sincs tobb zsak mint a szan egyszerre tud vinni
 	public static void feladat3() {
-
+		
 		if (raktarak.size() == 0) {
 			beolv();
 		}
-        int szanzsakokszama;
-        int nemnullaraktarszama;
-        int utakszama = 0;
-        int megtettKMek = 0;
+		int szanzsakokszama = szanteherbiras / zsaksuly;
+		int nemnullaraktarszama;
+		int utakszama = 0;
+		int megtettKMek = 0;
 
-        while (mennyiKellMeg(raktarak) != 0) {
-
-            utakszama++;
-            nemnullaraktarszama = legkozelebbiNemNullaKeszlet(raktarak);
-            megtettKMek += 2 * mennyitav(70, 23, raktarak.get(nemnullaraktarszama).getLat(), raktarak.get(nemnullaraktarszama).getLon());
-            szanzsakokszama = szanteherbiras / zsaksuly;
-
-            while (szanzsakokszama != 0) {
-                if (nemnullaraktarszama >= raktarak.size()) {
-                    return;
-                }
-                System.out.printf("Erintett raktar: %d, %d; eddig megtett KM-ek: %d \n", raktarak.get(nemnullaraktarszama).getLat(), raktarak.get(nemnullaraktarszama).getLon(), megtettKMek);
-                if (szanzsakokszama > raktarak.get(nemnullaraktarszama).getKeszlet()) {
-                    szanzsakokszama -= raktarak.get(nemnullaraktarszama).getKeszlet();
-                    raktarak.get(nemnullaraktarszama).setKeszlet(0);
-                    nemnullaraktarszama++;
-                    // menjel ma' tovabb
-                } else {
-                    raktarak.get(nemnullaraktarszama).setKeszlet(raktarak.get(nemnullaraktarszama).getKeszlet() - szanzsakokszama);
-                    szanzsakokszama = 0;
-                    // menjel ma' haza
-                }
-
-            }
-            System.out.println("Back to base");
-        }
-
+		outer:while (mennyiKellMeg(raktarak) != 0) {
+			utakszama++;
+			nemnullaraktarszama = legkozelebbiNemNullaKeszlet(raktarak);
+			megtettKMek += mennyitav(raktarak.get(0).getLat(), raktarak.get(0).getLon(), raktarak.get(nemnullaraktarszama).getLat(), raktarak.get(nemnullaraktarszama).getLon());
+			szanzsakokszama = szanteherbiras / zsaksuly;
+			while (szanzsakokszama != 0) {
+				if(nemnullaraktarszama == 0) {
+					break outer;
+				}
+				System.out.printf("Erintett raktar: %d, %d; eddig megtett KM-ek: %d \n", raktarak.get(nemnullaraktarszama).getLat(), raktarak.get(nemnullaraktarszama).getLon(), megtettKMek);
+				if (szanzsakokszama > raktarak.get(nemnullaraktarszama).getKeszlet()) {
+					szanzsakokszama -= raktarak.get(nemnullaraktarszama).getKeszlet();
+					raktarak.get(nemnullaraktarszama).setKeszlet(0);
+					int aktraktar = nemnullaraktarszama;
+					nemnullaraktarszama = legkozelebbiNemNullaKeszlet(raktarak);
+					if (szanzsakokszama < raktarak.get(nemnullaraktarszama).getKeszlet()) {
+						break;
+					}
+					megtettKMek += mennyitav(raktarak.get(aktraktar).getLat(), raktarak.get(aktraktar).getLon(), raktarak.get(nemnullaraktarszama).getLat(), raktarak.get(nemnullaraktarszama).getLon());
+					// menjel ma' tovabb
+				} else {
+					raktarak.get(nemnullaraktarszama).setKeszlet(raktarak.get(nemnullaraktarszama).getKeszlet() - szanzsakokszama);
+					szanzsakokszama = 0;
+					// menjel ma' haza
+				}
+				
+			}
+			megtettKMek += mennyitav(raktarak.get(nemnullaraktarszama).getLat(), raktarak.get(nemnullaraktarszama).getLon(), raktarak.get(0).getLat(), raktarak.get(0).getLon());			
+			System.out.println("Back to base");
+		}
+		// theoretical distance 24254 for raktar2.txt
+		System.out.printf("Megtett kilometerek: %d, megtett utakszama: %d \n",
+                 megtettKMek, utakszama);
 	}
 
 	public static ArrayList<ArrayList<Integer>> feladat4() {
@@ -285,7 +304,7 @@ public class Main {
 	}
 
 	public static int legkozelebbiNemNullaKeszlet(ArrayList<Raktar> raktaryes) {
-		int nemnullaraktarszama = 1;
+		int nemnullaraktarszama = 0;
 		for (int i = 0; i < raktaryes.size(); i++) {
 			// 1 raktar aminek keszlete nem 0
 			if (raktaryes.get(i).getKeszlet() != 0) {
@@ -295,7 +314,7 @@ public class Main {
 		}
 		return nemnullaraktarszama;
 	}
-
+	
 	// forras: https://www.movable-type.co.uk/scripts/latlong.html
 	// haversine egyenlet
 	public static int mennyitav(int lat1, int lon1, int lat2, int lon2) {
@@ -312,7 +331,7 @@ public class Main {
 		return (int) (r * c) / 1000; // kilometerben
 	}
 
-
+	
 
 	public static void beolv() {
 		try {
@@ -343,6 +362,7 @@ public class Main {
 					r.setMaxcap(maxcapkeszlet);
 					r.setKeszlet(maxcapkeszlet);
 				}
+				
 				raktarak.add(r);
 				sc.close();
 			}
