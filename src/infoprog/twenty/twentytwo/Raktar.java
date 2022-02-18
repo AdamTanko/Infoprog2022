@@ -3,21 +3,13 @@ package infoprog.twenty.twentytwo;
 public class Raktar {
 	private int lat;
 	private int lon;
-	private int maxcap; //
+	private int maxcap;
 	private int keszlet; // mennyi fer meg
 
 	public Raktar() {
 
 	}
-	
-	
-	public Raktar(Raktar r) {
-		this.lat = r.lat;
-		this.lon = r.lon;
-		this.maxcap = r.maxcap;
-		this.keszlet = r.maxcap;
-	}
-	
+
 	public Raktar(int lat, int lon, int maxcap) {
 		super();
 		this.lat = lat;
@@ -40,9 +32,6 @@ public class Raktar {
 		this.lon = lon;
 	}
 
-	public int getMaxcap() {
-		return maxcap;
-	}
 	public void setMaxcap(int maxcap)  {
 		this.maxcap = maxcap ;
 	}
@@ -54,7 +43,4 @@ public class Raktar {
 		this.keszlet = keszlet;
 	}
 
-	public int throw_() {
-		throw new RuntimeException("maxcap mar meg volt adva");
-	}
 }
