@@ -27,6 +27,7 @@ public class Main {
         Scanner sc = new Scanner(System.in);
         
         while (true) {
+            // ha futattás közben az "Infoprog" nem zöld akkor az helyi hiba, mert IntelliJ IDEA Ultimate-ben nekem ment - Tankó Á.
             System.out.print("╒=======================╕\n" +
                              "| \033[1;32mInfoprog 2022\033[1;0m         |\n" +
                              "|                       |\n" +
@@ -93,9 +94,6 @@ public class Main {
 
 	public static void feladat1_2() {
 		try {
-			if (raktarak.size() == 0) {
-				beolv();
-			}
 			int zsakokSzamaASzanon = szanteherbiras / zsaksuly;
 			int elsoNemNullaRaktarIndexe;
 			int utakszama = 0;
@@ -140,10 +138,6 @@ public class Main {
 	}
 
 	public static void feladat3() {
-		
-		if (raktarak.size() == 0) {
-			beolv();
-		}
 		int zsakokSzamaASzanon;
 		int elsoNemNullaRaktarIndexe;
 		int utakszama = 0;
@@ -231,9 +225,6 @@ public class Main {
 	}
 
 	public static void feladat5(ArrayList<ArrayList<Integer>> utvonalak) {
-		if (raktarak.size() == 0) {
-			beolv();
-		}
         for (ArrayList<Integer> integers : utvonalak) {
             ArrayList<Raktar> tempraktarak = new ArrayList<>();
             for (Integer integer : integers) {
