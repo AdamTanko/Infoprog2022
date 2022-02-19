@@ -27,7 +27,7 @@ public class Main {
         Scanner sc = new Scanner(System.in);
         
         while (true) {
-            // ha futattás közben az "Infoprog" nem zöld akkor az helyi hiba, mert IntelliJ IDEA Ultimate-ben nekem ment - Tankó Á.
+            // ha futatas kozben az "Infoprog" nem zold akkor az helyi hiba, mert IntelliJ IDEA Ultimate-ben nekem ment - Tanko A.
             System.out.print("╒=======================╕\n" +
                              "| \033[1;32mInfoprog 2022\033[1;0m         |\n" +
                              "|                       |\n" +
@@ -90,7 +90,6 @@ public class Main {
         }
        
     }
-
 
 	public static void feladat1_2() {
 		try {
