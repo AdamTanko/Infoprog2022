@@ -27,9 +27,9 @@ public class Main {
         Scanner sc = new Scanner(System.in);
         
         while (true) {
-            // ha futatas kozben az "Infoprog" nem zold akkor az helyi hiba, mert IntelliJ IDEA Ultimate-ben nekem ment - Tanko A.
+        	System.out.println("ha futatás közben az \"Infoprog\" nem zöld akkor az helyi hiba, mert IntelliJ IDEA Ultimate-ben nekem ment - Tanko A.");
             System.out.print("╒=======================╕\n" +
-                             "| \033[1;32mInfoprog 2022\033[1;0m         |\n" +
+                             "| \u001B[1;32mInfoprog 2022\u001B[1;0m         |\n" +
                              "|                       |\n" +
                              "| Egy szám beírásával   |\n" +
                              "| lehet kiválasztani,   |\n" +
@@ -216,7 +216,6 @@ public class Main {
 			futasszama++;
 			System.out.printf("ennyi utvonal van: %d , futasok: %d \n", utvonalak.size(), futasszama);
 		}
-		System.out.println("lol");
 		for (ArrayList<Integer> integers : utvonalak) {
 			System.out.println(integers.toString());
 		}
