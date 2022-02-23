@@ -8,12 +8,12 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.Scanner;
-
+import java.util.concurrent.TimeUnit;
 
 
 public class Main {
 
-	private static final String filepath = "data files/raktar2.txt";
+	private static String filepath = "datafiles/raktar2.txt";
 	// kilogrammban
 	private static final int zsaksuly = 20;
 	private static final int szanteherbiras = 2500;
@@ -22,12 +22,13 @@ public class Main {
 
 
 
-	public static void main(String[] args) {
-        beolv();
+	public static void main(String[] args) throws InterruptedException {
+
+		System.out.println("ha futatás közben az \"Infoprog\" nem zöld akkor az helyi hiba, mert IntelliJ IDEA Ultimate-ben és Windows Terminal-ban nekem ment - Tanko A.");
         Scanner sc = new Scanner(System.in);
-        
+		beolv();
         while (true) {
-        	System.out.println("ha futatás közben az \"Infoprog\" nem zöld akkor az helyi hiba, mert IntelliJ IDEA Ultimate-ben nekem ment - Tanko A.");
+
             System.out.print("╒=======================╕\n" +
                              "| \u001B[1;32mInfoprog 2022\u001B[1;0m         |\n" +
                              "|                       |\n" +
@@ -38,8 +39,19 @@ public class Main {
                              "╘=======================╛\n" +
                              " 0 - kilépés, 1 - 1.feladat és 2.feladat, 3 - 3.feladat, 4 - 4.feladat, 5 - 5.feladat \n" +
                              "Ide: ");
-            
-            int x = Integer.parseInt(sc.next());
+            String input = sc.next();
+            int x;
+            try  {
+				x = Integer.parseInt(input);
+			} catch (NumberFormatException e) {
+            	System.out.println("\"" + input+ "\"" + " nem jó bemenet");
+				TimeUnit.SECONDS.sleep(2);
+				for (int i = 0; i < 20; i++) {
+					System.out.println();
+				}
+            	continue;
+			}
+
 			switch (x) {
 			case 0:
 				System.out.println("Kilépés...");
