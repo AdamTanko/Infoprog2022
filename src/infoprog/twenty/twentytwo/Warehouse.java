@@ -4,7 +4,7 @@ public class Warehouse {
 	private int lat;
 	private int lon;
 	private int maxcap;
-	private int stock; // mennyi fer meg
+	private int stock; // a.k.a. how much space left
 
 	public Warehouse() {
 
