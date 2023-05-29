@@ -1,5 +1,9 @@
 # Infoprog2022
 
-### Beállítás:
-1. A "filepath" változót úgy változtassa meg, hogy arra a `.txt` fájlra mutasson amivel akar dolgozni.
-2. A `zsaksuly` és a `szanteherbiras` változókat szükség szerint változtassa meg.
+### Setting up:
+1. Change the `filepath` variable in `Main.java`, so that it points to the `.txt`, with which you want to work 
+2. Change the `SACK_WEIGHT` and `SLEIGH_CARRYING_CAPACITY` as needed
+
+### Source format
+- First line is the Main warehouse (`Latitude,Longitude`).
+- The remaining lines are the coordinates of the other warehouses and the capacity of them. (`Latitude,Longitude,Capacity`)

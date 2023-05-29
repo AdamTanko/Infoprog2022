@@ -13,38 +13,37 @@ import java.util.concurrent.TimeUnit;
 
 public class Main {
 
-	private static String filepath = "datafiles/raktar2.txt";
-	// kilogrammban
-	private static final int zsaksuly = 20;
-	private static final int szanteherbiras = 2500;
+	private static final String filepath = "datafiles/raktar2.txt";
+	// in kilograms
+	private static final int SACK_WEIGHT = 20;
+	private static final int SLEIGH_CARRYING_CAPACITY = 2500;
 
-	public static ArrayList<Raktar> raktarak = new ArrayList<>();
+	public static ArrayList<Warehouse> warehouses = new ArrayList<>();
 
 
 
 	public static void main(String[] args) throws InterruptedException {
 
-		System.out.println("ha futatás közben az \"Infoprog\" nem zöld akkor az helyi hiba, mert IntelliJ IDEA Ultimate-ben és Windows Terminal-ban nekem ment - Tanko A.");
         Scanner sc = new Scanner(System.in);
-		beolv();
+		parse();
         while (true) {
 
             System.out.print("╒=======================╕\n" +
-                             "| \u001B[1;32mInfoprog 2022\u001B[1;0m         |\n" +
+                             "|     Infoprog 2022     |\n" +
                              "|                       |\n" +
-                             "| Egy szám beírásával   |\n" +
-                             "| lehet kiválasztani,   |\n" +
-                             "| hogy melyik feladat   |\n" +
-                             "| fusson le             |\n" +
+                             "| By entering a number  |\n" +
+                             "| you can choose        |\n" +
+                             "| which exercise should |\n" +
+                             "| be runned             |\n" +
                              "╘=======================╛\n" +
-                             " 0 - kilépés, 1 - 1.feladat és 2.feladat, 3 - 3.feladat, 4 - 4.feladat, 5 - 5.feladat \n" +
-                             "Ide: ");
+                             " 0 - exit, 1 - 1. & 2.exercise, 3 - 3.exercise, 4 - 4.exercise, 5 - 5.exercise \n" +
+                             "Here: ");
             String input = sc.next();
             int x;
             try  {
 				x = Integer.parseInt(input);
 			} catch (NumberFormatException e) {
-            	System.out.println("\"" + input+ "\"" + " nem jó bemenet");
+            	System.out.println("\"" + input+ "\"" + " bad input");
 				TimeUnit.SECONDS.sleep(2);
 				for (int i = 0; i < 20; i++) {
 					System.out.println();
@@ -54,39 +53,39 @@ public class Main {
 
 			switch (x) {
 			case 0:
-				System.out.println("Kilépés...");
+				System.out.println("Exiting...");
 				sc.close();
 				return;
 			case 1:
-				raktarak = new ArrayList<>();
-				beolv();
-				System.out.println("===1/2. Feladat===");
-				feladat1_2();
+				warehouses = new ArrayList<>();
+				parse();
+				System.out.println("===1/2. exercise===");
+				ex1_2();
 				break;
 			case 3:
-				raktarak = new ArrayList<>();
-				beolv();
-				System.out.println("===3. Feladat===");
-				feladat3();
+				warehouses = new ArrayList<>();
+				parse();
+				System.out.println("===3. exercise===");
+				ex3();
 				break;
 			case 4:
-				raktarak = new ArrayList<>();
-				beolv();
-				System.out.println("===4. Feladat===");
-				feladat4();
+				warehouses = new ArrayList<>();
+				parse();
+				System.out.println("===4. exercise===");
+				ex4();
 				break;
 			case 5:
-				raktarak = new ArrayList<>();
-				beolv();
-				System.out.println("===5. Feladat===");
-				feladat5(feladat4());
+				warehouses = new ArrayList<>();
+				parse();
+				System.out.println("===5. exercise===");
+				ex5(ex4());
 				break;
 
 			}
             
             while (true) {
                 try {
-                    System.out.println("Nyomja meg az \"ENTER\"-t ha tovább akar menni");
+                    System.out.println("Press \"ENTER\" to continue");
                     if (System.in.read() == 10) {
                         break;
                     }
@@ -103,210 +102,210 @@ public class Main {
        
     }
 
-	public static void feladat1_2() {
+	public static void ex1_2() {
 		try {
-			int zsakokSzamaASzanon = szanteherbiras / zsaksuly;
-			int elsoNemNullaRaktarIndexe;
-			int utakszama = 0;
-			int megtettKilometerek = 0;
+			int sacksOnSleigh = SLEIGH_CARRYING_CAPACITY / SACK_WEIGHT;
+			int firstNonZeroWarehouseIndex;
+			int tripcount = 0;
+			int kilometersTravelled = 0;
 
-			outer: while (mennyiKellMeg(raktarak) != 0) {
-				utakszama++;
-				elsoNemNullaRaktarIndexe = legkozelebbiNemNullaKeszlet(raktarak);
-				megtettKilometerek += mennyitav(raktarak.get(0).getLat(), raktarak.get(0).getLon(), raktarak.get(elsoNemNullaRaktarIndexe).getLat(), raktarak.get(elsoNemNullaRaktarIndexe).getLon());
-				zsakokSzamaASzanon = szanteherbiras / zsaksuly;
-				while (zsakokSzamaASzanon != 0) {
-					System.out.printf("Érintett raktár: %d, %d; eddig megtett Km-ek: %d \n", raktarak.get(elsoNemNullaRaktarIndexe).getLat(), raktarak.get(elsoNemNullaRaktarIndexe).getLon(), megtettKilometerek);
-					if (zsakokSzamaASzanon > raktarak.get(elsoNemNullaRaktarIndexe).getKeszlet()) {
-						zsakokSzamaASzanon -= raktarak.get(elsoNemNullaRaktarIndexe).getKeszlet();
-						raktarak.get(elsoNemNullaRaktarIndexe).setKeszlet(0);
-						int aktraktar = elsoNemNullaRaktarIndexe;
-						elsoNemNullaRaktarIndexe = legkozelebbiNemNullaKeszlet(raktarak);
-						megtettKilometerek += mennyitav(raktarak.get(aktraktar).getLat(), raktarak.get(aktraktar).getLon(), raktarak.get(elsoNemNullaRaktarIndexe).getLat(), raktarak.get(elsoNemNullaRaktarIndexe).getLon());
+			outer: while (howManyAreNeeded(warehouses) != 0) {
+				tripcount++;
+				firstNonZeroWarehouseIndex = closestNonZeroWarehouse(warehouses);
+				kilometersTravelled += howFar(warehouses.get(0).getLat(), warehouses.get(0).getLon(), warehouses.get(firstNonZeroWarehouseIndex).getLat(), warehouses.get(firstNonZeroWarehouseIndex).getLon());
+				sacksOnSleigh = SLEIGH_CARRYING_CAPACITY / SACK_WEIGHT;
+				while (sacksOnSleigh != 0) {
+					System.out.printf("Current warehouse: %d, %d; kilometers travelled so far: %d \n", warehouses.get(firstNonZeroWarehouseIndex).getLat(), warehouses.get(firstNonZeroWarehouseIndex).getLon(), kilometersTravelled);
+					if (sacksOnSleigh > warehouses.get(firstNonZeroWarehouseIndex).getStock()) {
+						sacksOnSleigh -= warehouses.get(firstNonZeroWarehouseIndex).getStock();
+						warehouses.get(firstNonZeroWarehouseIndex).setStock(0);
+						int curWarehouse = firstNonZeroWarehouseIndex;
+						firstNonZeroWarehouseIndex = closestNonZeroWarehouse(warehouses);
+						kilometersTravelled += howFar(warehouses.get(curWarehouse).getLat(), warehouses.get(curWarehouse).getLon(), warehouses.get(firstNonZeroWarehouseIndex).getLat(), warehouses.get(firstNonZeroWarehouseIndex).getLon());
 					} else {
-						raktarak.get(elsoNemNullaRaktarIndexe).
-                                setKeszlet(raktarak.get(elsoNemNullaRaktarIndexe).
-                                        getKeszlet() - zsakokSzamaASzanon);
-						zsakokSzamaASzanon = 0;
+						warehouses.get(firstNonZeroWarehouseIndex).
+								setStock(warehouses.get(firstNonZeroWarehouseIndex).
+										getStock() - sacksOnSleigh);
+						sacksOnSleigh = 0;
 					}
-					if (elsoNemNullaRaktarIndexe == raktarak.size()) {
-						String s = "," + zsakokSzamaASzanon;
+					if (firstNonZeroWarehouseIndex == warehouses.size()) {
+						String s = "," + sacksOnSleigh;
 						Files.write(Paths.get(filepath), s.getBytes(), StandardOpenOption.APPEND);
-						raktarak.get(elsoNemNullaRaktarIndexe - 1).setKeszlet(zsakokSzamaASzanon);
-						System.out.println("Maradek zsakok szama hozza adva a raktar.txt-hez");
+						warehouses.get(firstNonZeroWarehouseIndex - 1).setStock(sacksOnSleigh);
+						System.out.println("The number of remaining sacks has been added to raktarok.txt");
 						break outer;
 					}
 				}
-				megtettKilometerek += mennyitav(raktarak.get(elsoNemNullaRaktarIndexe).getLat(), raktarak.get(elsoNemNullaRaktarIndexe).getLon(), raktarak.get(0).getLat(), raktarak.get(0).getLon());
-				System.out.println("Vissza Lapföldre");
+				kilometersTravelled += howFar(warehouses.get(firstNonZeroWarehouseIndex).getLat(), warehouses.get(firstNonZeroWarehouseIndex).getLon(), warehouses.get(0).getLat(), warehouses.get(0).getLon());
+				System.out.println("Back to Lapland");
 			}
 			// theoretical distance 24254 for raktar2.txt
-			System.out.printf("Utolsó raktárba vitt zsákok: %d, megtett kilométerek: %d, megtett utakszáma: %d \n", zsakokSzamaASzanon, megtettKilometerek, utakszama);
+			System.out.printf("Sacks taken to the last warehouse: %d, kilometers travelled: %d, trips made: %d \n", sacksOnSleigh, kilometersTravelled, tripcount);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
-	public static void feladat3() {
-		int zsakokSzamaASzanon;
-		int elsoNemNullaRaktarIndexe;
-		int utakszama = 0;
-		int megtettKilometerek = 0;
+	public static void ex3() {
+		int sacksOnSleigh;
+		int firstNonzeroWarehouseIndex;
+		int tripcount = 0;
+		int kilometersTravelled = 0;
 
-		outer:while (mennyiKellMeg(raktarak) != 0) {
-			utakszama++;
-			elsoNemNullaRaktarIndexe = legkozelebbiNemNullaKeszlet(raktarak);
-			megtettKilometerek += mennyitav(raktarak.get(0).getLat(), raktarak.get(0).getLon(), raktarak.get(elsoNemNullaRaktarIndexe).getLat(), raktarak.get(elsoNemNullaRaktarIndexe).getLon());
-			zsakokSzamaASzanon = szanteherbiras / zsaksuly;
-			while (zsakokSzamaASzanon != 0) {
-				if(elsoNemNullaRaktarIndexe == 0) {
+		outer:while (howManyAreNeeded(warehouses) != 0) {
+			tripcount++;
+			firstNonzeroWarehouseIndex = closestNonZeroWarehouse(warehouses);
+			kilometersTravelled += howFar(warehouses.get(0).getLat(), warehouses.get(0).getLon(), warehouses.get(firstNonzeroWarehouseIndex).getLat(), warehouses.get(firstNonzeroWarehouseIndex).getLon());
+			sacksOnSleigh = SLEIGH_CARRYING_CAPACITY / SACK_WEIGHT;
+			while (sacksOnSleigh != 0) {
+				if(firstNonzeroWarehouseIndex == 0) {
 					break outer;
 				}
-				System.out.printf("Érintett raktár: %d, %d; eddig megtett Km-ek: %d \n", raktarak.get(elsoNemNullaRaktarIndexe).getLat(), raktarak.get(elsoNemNullaRaktarIndexe).getLon(), megtettKilometerek);
-				if (zsakokSzamaASzanon > raktarak.get(elsoNemNullaRaktarIndexe).getKeszlet()) {
-					zsakokSzamaASzanon -= raktarak.get(elsoNemNullaRaktarIndexe).getKeszlet();
-					raktarak.get(elsoNemNullaRaktarIndexe).setKeszlet(0);
-					int aktraktar = elsoNemNullaRaktarIndexe;
-					elsoNemNullaRaktarIndexe = legkozelebbiNemNullaKeszlet(raktarak);
-					if (zsakokSzamaASzanon < raktarak.get(elsoNemNullaRaktarIndexe).getKeszlet()) {
+				System.out.printf("Current warehouse: %d, %d; kilometers travelled so far: %d \n", warehouses.get(firstNonzeroWarehouseIndex).getLat(), warehouses.get(firstNonzeroWarehouseIndex).getLon(), kilometersTravelled);
+				if (sacksOnSleigh > warehouses.get(firstNonzeroWarehouseIndex).getStock()) {
+					sacksOnSleigh -= warehouses.get(firstNonzeroWarehouseIndex).getStock();
+					warehouses.get(firstNonzeroWarehouseIndex).setStock(0);
+					int aktraktar = firstNonzeroWarehouseIndex;
+					firstNonzeroWarehouseIndex = closestNonZeroWarehouse(warehouses);
+					if (sacksOnSleigh < warehouses.get(firstNonzeroWarehouseIndex).getStock()) {
 						break;
 					}
-					megtettKilometerek += mennyitav(raktarak.get(aktraktar).getLat(), raktarak.get(aktraktar).getLon(), raktarak.get(elsoNemNullaRaktarIndexe).getLat(), raktarak.get(elsoNemNullaRaktarIndexe).getLon());
+					kilometersTravelled += howFar(warehouses.get(aktraktar).getLat(), warehouses.get(aktraktar).getLon(), warehouses.get(firstNonzeroWarehouseIndex).getLat(), warehouses.get(firstNonzeroWarehouseIndex).getLon());
 				} else {
-					raktarak.get(elsoNemNullaRaktarIndexe).setKeszlet(raktarak.get(elsoNemNullaRaktarIndexe).getKeszlet() - zsakokSzamaASzanon);
-					zsakokSzamaASzanon = 0;
+					warehouses.get(firstNonzeroWarehouseIndex).setStock(warehouses.get(firstNonzeroWarehouseIndex).getStock() - sacksOnSleigh);
+					sacksOnSleigh = 0;
 				}
 				
 			}
-			megtettKilometerek += mennyitav(raktarak.get(elsoNemNullaRaktarIndexe).getLat(), raktarak.get(elsoNemNullaRaktarIndexe).getLon(), raktarak.get(0).getLat(), raktarak.get(0).getLon());
-			System.out.println("Vissza Lapföldre");
+			kilometersTravelled += howFar(warehouses.get(firstNonzeroWarehouseIndex).getLat(), warehouses.get(firstNonzeroWarehouseIndex).getLon(), warehouses.get(0).getLat(), warehouses.get(0).getLon());
+			System.out.println("Back to Lapland");
 		}
-		System.out.printf("Megtett kilometerek: %d, megtett utakszama: %d \n", megtettKilometerek, utakszama);
+		System.out.printf("Kilometers travelled: %d, trips made: %d \n", kilometersTravelled, tripcount);
 	}
 
-	public static ArrayList<ArrayList<Integer>> feladat4() {
+	public static ArrayList<ArrayList<Integer>> ex4() {
 
-		int[][] tavok = raktarakkoztitav();
-		ArrayList<ArrayList<Integer>> utvonalak = new ArrayList<>();
-		utvonalak.add(new ArrayList<>());
-		int aktualisUtvonal = 0;
-		int futasszama = 0;
-		utvonalak.get(0).add(0);
+		int[][] distances = distancesBetweenWarehouses();
+		ArrayList<ArrayList<Integer>> routes = new ArrayList<>();
+		routes.add(new ArrayList<>());
+		int currentRoute = 0;
+		routes.get(0).add(0);
 
-		while (aktualisUtvonal < utvonalak.size()) {
-			for (int j = 0; j < tavok.length - 1; j++) {
-				int aktsor = utvonalak.get(aktualisUtvonal).get(utvonalak.get(aktualisUtvonal).size() - 1);
-				int mintav = Integer.MAX_VALUE;
-				for (int i = 0; i < tavok.length; i++) {
-					if ((tavok[aktsor][i] < mintav) && !(utvonalak.get(aktualisUtvonal).contains(i))
-							&& (tavok[aktsor][i] != 0)) {
-						mintav = tavok[aktsor][i];
+		while (currentRoute < routes.size()) {
+			for (int j = 0; j < distances.length - 1; j++) {
+				int curLine = routes.get(currentRoute).get(routes.get(currentRoute).size() - 1);
+				int minDist = Integer.MAX_VALUE;
+				for (int i = 0; i < distances.length; i++) {
+					if ((distances[curLine][i] < minDist) && !(routes.get(currentRoute).contains(i))
+							&& (distances[curLine][i] != 0)) {
+						minDist = distances[curLine][i];
 					}
 				}
-				int elso = 0;
-				boolean volteMarTalalva = false;
-				for (int i = 0; i < tavok.length; i++) {
-					if ((tavok[aktsor][i] == mintav) && !(utvonalak.get(aktualisUtvonal).contains(i))
-							&& !volteMarTalalva) {
-						elso = i;
-						volteMarTalalva = true;
+				int first = 0;
+				boolean found = false;
+				for (int i = 0; i < distances.length; i++) {
+					if ((distances[curLine][i] == minDist) && !(routes.get(currentRoute).contains(i))
+							&& !found) {
+						first = i;
+						found = true;
 						continue;
 					}
-					if ((tavok[aktsor][i] == mintav) && !(utvonalak.get(aktualisUtvonal).contains(i))) {
-						ArrayList<Integer> list = new ArrayList<>(utvonalak.get(aktualisUtvonal));
+					if ((distances[curLine][i] == minDist) && !(routes.get(currentRoute).contains(i))) {
+						ArrayList<Integer> list = new ArrayList<>(routes.get(currentRoute));
 						list.add(i);
-						utvonalak.add(list);
+						routes.add(list);
 					}
 				}
-				if (volteMarTalalva) {
-					utvonalak.get(aktualisUtvonal).add(elso);
+				if (found) {
+					routes.get(currentRoute).add(first);
 				}
 			}
-			aktualisUtvonal++;
-			futasszama++;
-			System.out.printf("Ennyi útvonal van: %d , futások: %d \n", utvonalak.size(), futasszama);
+			currentRoute++;
+			System.out.println("Number of routes found:" + routes.size());
 		}
-		for (ArrayList<Integer> integers : utvonalak) {
-			System.out.println(integers.toString());
+		for (ArrayList<Integer> integers : routes) {
+			integers.forEach(System.out::println);
 		}
-		return utvonalak;
+		return routes;
 	}
 
-	public static void feladat5(ArrayList<ArrayList<Integer>> utvonalak) {
+	public static void ex5(ArrayList<ArrayList<Integer>> utvonalak) {
         for (ArrayList<Integer> integers : utvonalak) {
-            ArrayList<Raktar> tempraktarak = new ArrayList<>();
+            ArrayList<Warehouse> tempWare = new ArrayList<>();
             for (Integer integer : integers) {
-                tempraktarak.add(raktarak.get(integer));
+                tempWare.add(warehouses.get(integer));
             }
 
-            int zsakokSzamaASzanon = szanteherbiras / zsaksuly;
-            int elsoNemNullaRaktarIndexe;
-            int utakszama = 0;
-            int megtettKilometerek = 0;
+            int sacksOnSleigh = SLEIGH_CARRYING_CAPACITY / SACK_WEIGHT;
+            int firstNonzeroWarehouseIndex;
+            int tripcount = 0;
+            int kilometersTravelled = 0;
 
-            while (mennyiKellMeg(tempraktarak) != 0) {
+            while (howManyAreNeeded(tempWare) != 0) {
 
-                utakszama++;
-                elsoNemNullaRaktarIndexe = legkozelebbiNemNullaKeszlet(tempraktarak);
-                megtettKilometerek += 2 * mennyitav(70, 23, tempraktarak.get(elsoNemNullaRaktarIndexe).getLat(), tempraktarak.get(elsoNemNullaRaktarIndexe).getLon());
-                zsakokSzamaASzanon = szanteherbiras / zsaksuly;
+                tripcount++;
+                firstNonzeroWarehouseIndex = closestNonZeroWarehouse(tempWare);
+                kilometersTravelled += 2 * howFar(70, 23, tempWare.get(firstNonzeroWarehouseIndex).getLat(), tempWare.get(firstNonzeroWarehouseIndex).getLon());
+                sacksOnSleigh = SLEIGH_CARRYING_CAPACITY / SACK_WEIGHT;
 
-                while (zsakokSzamaASzanon != 0) {
-                    if (elsoNemNullaRaktarIndexe >= tempraktarak.size()) {
+                while (sacksOnSleigh != 0) {
+                    if (firstNonzeroWarehouseIndex >= tempWare.size()) {
                         return;
                     }
-                    System.out.printf("Érintett raktár: %d, %d; eddig megtett Km-ek: %d \n", tempraktarak.get(elsoNemNullaRaktarIndexe).getLat(), tempraktarak.get(elsoNemNullaRaktarIndexe).getLon(), megtettKilometerek);
-                    if (zsakokSzamaASzanon > tempraktarak.get(elsoNemNullaRaktarIndexe).getKeszlet()) {
-                        zsakokSzamaASzanon -= tempraktarak.get(elsoNemNullaRaktarIndexe).getKeszlet();
-                        tempraktarak.get(elsoNemNullaRaktarIndexe).setKeszlet(0);
-                        elsoNemNullaRaktarIndexe++;
+                    System.out.printf("Current warehouse: %d, %d; kilometers travelled so far: %d \n", tempWare.get(firstNonzeroWarehouseIndex).getLat(), tempWare.get(firstNonzeroWarehouseIndex).getLon(), kilometersTravelled);
+                    if (sacksOnSleigh > tempWare.get(firstNonzeroWarehouseIndex).getStock()) {
+                        sacksOnSleigh -= tempWare.get(firstNonzeroWarehouseIndex).getStock();
+                        tempWare.get(firstNonzeroWarehouseIndex).setStock(0);
+                        firstNonzeroWarehouseIndex++;
                     } else {
-                        tempraktarak.get(elsoNemNullaRaktarIndexe).setKeszlet(tempraktarak.get(elsoNemNullaRaktarIndexe).getKeszlet() - zsakokSzamaASzanon);
-                        zsakokSzamaASzanon = 0;
+                        tempWare.get(firstNonzeroWarehouseIndex).setStock(tempWare.get(firstNonzeroWarehouseIndex).getStock() - sacksOnSleigh);
+                        sacksOnSleigh = 0;
                     }
 
                 }
-                System.out.println("Vissza Lapföldre");
+                System.out.println("Back to Lapland");
             }
-            System.out.printf("Utolsó raktárba vitt zsákok: %d, megtett kilométerek: %d, megtett utakszáma: %d \n", zsakokSzamaASzanon, megtettKilometerek, utakszama);
+            System.out.printf("Sacks taken to the last warehouse: %d, kilometers travelled: %d, trips made: %d \n", sacksOnSleigh, kilometersTravelled, tripcount);
         }
 	}
 
-	public static int mennyiKellMeg(ArrayList<Raktar> raktaryes) {
-		int mennyiZsakKellMeg = 0;
-		for (Raktar raktar : raktaryes) {
-			mennyiZsakKellMeg += raktar.getKeszlet();
+	public static int howManyAreNeeded(ArrayList<Warehouse> warehouseTemp) {
+		int howManySacksAreNeeded = 0;
+		for (Warehouse warehouse : warehouseTemp) {
+			howManySacksAreNeeded += warehouse.getStock();
 		}
-		return mennyiZsakKellMeg;
+		return howManySacksAreNeeded;
 	}
 
-	public static int[][] raktarakkoztitav() {
-		int[][] tavok = new int[raktarak.size()][raktarak.size()];
-		for (int i = 0; i < raktarak.size(); i++) {
-			for (int j = 0; j < raktarak.size(); j++) {
-				int tav = mennyitav(raktarak.get(i).getLat(), raktarak.get(i).getLon(), raktarak.get(j).getLat(),
-						raktarak.get(j).getLon());
-				tavok[i][j] = tav;
+	public static int[][] distancesBetweenWarehouses() {
+		int[][] distances = new int[warehouses.size()][warehouses.size()];
+		for (int i = 0; i < warehouses.size(); i++) {
+			for (int j = 0; j < warehouses.size(); j++) {
+				int distance = howFar(warehouses.get(i).getLat(),
+						warehouses.get(i).getLon(),
+						warehouses.get(j).getLat(),
+						warehouses.get(j).getLon());
+				distances[i][j] = distance;
 			}
 		}
-		return tavok;
+		return distances;
 	}
 
-	public static int legkozelebbiNemNullaKeszlet(ArrayList<Raktar> raktaryes) {
-		int nemNullaRaktarIndexe = 0;
-		for (int i = 0; i < raktaryes.size(); i++) {
+	public static int closestNonZeroWarehouse(ArrayList<Warehouse> warehouseTemp) {
+		int nonZeroWarehouseIndex = 0;
+		for (int i = 0; i < warehouseTemp.size(); i++) {
 			// 1. raktar aminek keszlete nem 0
-			if (raktaryes.get(i).getKeszlet() != 0) {
-				nemNullaRaktarIndexe = i;
+			if (warehouseTemp.get(i).getStock() != 0) {
+				nonZeroWarehouseIndex = i;
 				break;
 			}
 		}
-		return nemNullaRaktarIndexe;
+		return nonZeroWarehouseIndex;
 	}
 	
-	// forras: https://www.movable-type.co.uk/scripts/latlong.html
-	// haversine egyenlet
-	public static int mennyitav(int lat1, int lon1, int lat2, int lon2) {
+	// source: https://www.movable-type.co.uk/scripts/latlong.html
+	// haversine formula
+	public static int howFar(int lat1, int lon1, int lat2, int lon2) {
 		final double r = 6371e3;
 		double Phi1 = lat1 * Math.PI / 180;
 		double Phi2 = lat2 * Math.PI / 180;
@@ -317,21 +316,21 @@ public class Main {
 				+ Math.cos(Phi1) * Math.cos(Phi2) * Math.sin(dLambda / 2) * Math.sin(dLambda / 2);
 		double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
-		return (int) (r * c) / 1000; // kilometerben
+		return (int) (r * c) / 1000; // in kilometers
 	}
 
 	
 
-	public static void beolv() {
+	public static void parse() {
 		try {
-			System.out.println("Beolvasás");
+			System.out.println("Parsing");
 			File f = new File(filepath);
 			Scanner sc2 = new Scanner(f);
 			boolean yes = true;
 			while (sc2.hasNextLine()) {
 				String scnextlinestring = sc2.nextLine();
 				Scanner sc = new Scanner(scnextlinestring).useDelimiter(",");
-				Raktar r = new Raktar();
+				Warehouse r = new Warehouse();
 				if (yes) {
 					yes = false;
 					r.setLat(Integer.parseInt(sc.next()));
@@ -340,22 +339,22 @@ public class Main {
 					r.setLat(Integer.parseInt(sc.next()));
 					r.setLon(Integer.parseInt(sc.next()));
 					if (sc.hasNextInt()) {
-						int maxcapkeszlet = sc.nextInt();
-						r.setMaxcap(maxcapkeszlet);
-						r.setKeszlet(maxcapkeszlet);
+						int maxstockcap = sc.nextInt();
+						r.setMaxcap(maxstockcap);
+						r.setStock(maxstockcap);
 					}
 				} else {
 					r.setLat(Integer.parseInt(sc.next()));
 					r.setLon(Integer.parseInt(sc.next()));
-					int maxcapkeszlet = Integer.parseInt(sc.next());
-					r.setMaxcap(maxcapkeszlet);
-					r.setKeszlet(maxcapkeszlet);
+					int maxstockcap = Integer.parseInt(sc.next());
+					r.setMaxcap(maxstockcap);
+					r.setStock(maxstockcap);
 				}
 				
-				raktarak.add(r);
+				warehouses.add(r);
 				sc.close();
 			}
-			System.out.println("Beolvasva");
+			System.out.println("Reading complete");
 			sc2.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
